@@ -29,6 +29,11 @@ public class TestController {
     private ApplicationTest applicationTest;
 
     /* 日志文件应用 */
+    /* 测试日志文件 */
+    // 1、引入Logger，注意jar包：org.slf4j.Logger;
+    // 2、变量名称全大写，如：LOGGER
+    // 3、LoggerFactory 注意jar包：org.slf4j.LoggerFactory;
+    // 4、getLogger(当前类.class)
     private final static Logger LOGGER =LoggerFactory.getLogger(TestController.class);
 
     /**
@@ -74,12 +79,16 @@ public class TestController {
     @GetMapping("/logTest")
     @ResponseBody
     public String logTest(){
-        LOGGER.trace("This is TRACE log");
-        LOGGER.trace("This is DEBUG log");
-        LOGGER.trace("This is INFO log");
-        LOGGER.trace("This is WARN log");
-        LOGGER.trace("This is ERROR log");
-        return "This is log test";
+        /*
+         * 	level: TRACE<DEBUG<INFO<WARN<ERROR
+         * 	我们在 appender file 的时候，并没有指定日志级别，在此由 root来控制，输出指定级别及之上级别的日志
+         */
+        LOGGER.trace("this is TRACE log.");
+        LOGGER.debug("this is DEBUG log.");
+        LOGGER.info("this is INFO log.");
+        LOGGER.warn("this is WARN log.");
+        LOGGER.error("this is ERROR log.");
+        return "this is log test!!!";
     }
 
 
