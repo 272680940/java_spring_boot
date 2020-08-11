@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/test")
 public class TestController {
 
-    /* 使用 @Value(${key}),获取全局配置文件的值 */
+    /* 使用 @Value(${key}),获取全局配置文件的值*/
     @Value("${com.info}")
     private String info;
 
@@ -61,10 +61,10 @@ public class TestController {
     @GetMapping("/testGetProp2")
     @ResponseBody
     public String testGetProp2(){
-        String msg = "";
-        msg=applicationTest.getInfo()+"----"+"随机数："+applicationTest.getRandom()
-                +"----"+"端口号："+applicationTest.getServerPort();
-        return msg;
+        StringBuffer sb = new StringBuffer();
+        sb.append(applicationTest.getInfo()).append(applicationTest.getRandom())
+               .append(applicationTest.getServerPort());
+        return sb.toString();
     }
 
     /**

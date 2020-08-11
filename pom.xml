@@ -32,6 +32,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!--  导入配置文件处理器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!--部署成war包时开启↓↓↓↓-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
