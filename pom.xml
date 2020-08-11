@@ -39,6 +39,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- 热部署需要的jar -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
         <!--部署成war包时开启↓↓↓↓-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -51,6 +57,28 @@
             <scope>provided</scope>
         </dependency>
         <!--部署成war包时开启↑↑↑↑-->
+
+        <!-- mysql jar包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.25</version>
+        </dependency>
+
+        <!-- mybatis jar包 -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!-- pagehelper jar包 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+
     </dependencies>
 
     <build>
