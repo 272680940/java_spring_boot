@@ -1,0 +1,6 @@
+解决jpa自动建表字段乱序问题
+hibernate源码中用的是TreeMap存储实体类字段，TreeMap属性是无序的,
+所以创建实体类中的表，创建完之后你会发现数据库里的字段和实体类里的字段顺序是不一样的
+
+找到这个类：org.hibernate.cfg.PropertyContainer
+在 src/main/java 目录下 新建包名 包名与源码包名一致，并替换该类中的 TreeMap 为 LinkedHashMap 保存
