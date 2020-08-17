@@ -30,4 +30,12 @@ public class CountryController {
     public Country getCountryByCountryName(@RequestParam String countryName){
         return countryService.getCountryByCountryName(countryName);
     }
+
+    /**
+     *localhost/api/redis/country/522 ---- GET
+     */
+    @GetMapping("/redis/country/{countryId}")
+    public Country mograteCountryByRedis(@PathVariable int countryId){
+        return countryService.mograteCountryByRedis(countryId);
+    }
 }

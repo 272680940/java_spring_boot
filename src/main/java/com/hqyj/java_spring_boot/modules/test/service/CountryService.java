@@ -8,4 +8,7 @@ public interface CountryService {
 
     //通过countryName查询国家
     Country getCountryByCountryName(String countryName);
+
+    //Redis
+    Country mograteCountryByRedis(int countryId);
 }

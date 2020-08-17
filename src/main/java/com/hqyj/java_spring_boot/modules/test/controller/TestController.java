@@ -1,14 +1,22 @@
 package com.hqyj.java_spring_boot.modules.test.controller;
 
+import com.hqyj.java_spring_boot.modules.test.entity.City;
+import com.hqyj.java_spring_boot.modules.test.entity.Country;
+import com.hqyj.java_spring_boot.modules.test.service.CityService;
+import com.hqyj.java_spring_boot.modules.test.service.CountryService;
 import com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/test")
@@ -91,5 +99,46 @@ public class TestController {
         return "this is log test!!!";
     }
 
+    @Autowired
+    private CityService cityService;
+    @Autowired
+    private CountryService countryService;
+
+    /**
+     * localhost/test/index
+     */
+    @GetMapping("/index")
+    public String testIndexPage(ModelMap modelMap) {
+        int countryId = 522;
+        List<City> cities = cityService.getCitiesByCountryId(countryId);
+        cities = cities.stream().limit(10).collect(Collectors.toList());
+        Country country = countryService.getCountryByCountryId(countryId);
+
+        modelMap.addAttribute("thymeleafTitle", "111111111111");
+        modelMap.addAttribute("checked", true);
+        modelMap.addAttribute("currentNumber", 99);
+        modelMap.addAttribute("changeType", "checkbox");
+        modelMap.addAttribute("baiduUrl", "/test/log");
+        modelMap.addAttribute("city", cities.get(0));
+        modelMap.addAttribute("BaiDuLogo",
+                "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png");
+//        modelMap.addAttribute("BaiDuLogo",
+//                "/upload/222.png");
+//        modelMap.addAttribute("country", country);
+//        modelMap.addAttribute("cities", cities);
+//        modelMap.addAttribute("updateCityUri", "/api/city");
+//        modelMap.addAttribute("template", "test/index");
+//      返回外层的碎片组装器
+        return "index";
+    }
+
+    /**
+     * localhost/test/index2
+     */
+    @GetMapping("/index2")
+    public String testIndex2Page(ModelMap modelMap) {
+        modelMap.addAttribute("template", "test/index2");
+        return "index";
+    }
 
 }
