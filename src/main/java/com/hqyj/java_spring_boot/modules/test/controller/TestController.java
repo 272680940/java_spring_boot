@@ -13,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,13 +124,13 @@ public class TestController {
         modelMap.addAttribute("city", cities.get(0));
         modelMap.addAttribute("BaiDuLogo",
                 "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png");
-//        modelMap.addAttribute("BaiDuLogo",
-//                "/upload/222.png");
-//        modelMap.addAttribute("country", country);
-//        modelMap.addAttribute("cities", cities);
-//        modelMap.addAttribute("updateCityUri", "/api/city");
-//        modelMap.addAttribute("template", "test/index");
-//      返回外层的碎片组装器
+        modelMap.addAttribute("BaiDuLogo",
+                "/upload/222.png");
+        modelMap.addAttribute("country", country);
+        modelMap.addAttribute("cities", cities);
+        modelMap.addAttribute("updateCityUri", "/api/city");
+        //modelMap.addAttribute("template", "test/index");
+        //返回外层的碎片组装器
         return "index";
     }
 
@@ -141,4 +143,17 @@ public class TestController {
         return "index";
     }
 
+    /**
+     * 过滤器Filter
+     * 需求：对前端传来的敏感字符 “fuck” 进行过滤
+     * localhost/test/testFilter?paramKey=fuck --- GET
+     */
+    @GetMapping("/testFilter")
+    @ResponseBody
+    public String testFilter(@RequestParam(value = "paramKey") String paramValue,
+                             HttpServletRequest request){
+
+        String paramValue2 = request.getParameter("paramKey");
+        return "请求的参数为"+paramValue2+"=="+paramValue;
+    }
 }
