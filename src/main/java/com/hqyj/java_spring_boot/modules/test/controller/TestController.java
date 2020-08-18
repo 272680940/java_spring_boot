@@ -5,18 +5,29 @@ import com.hqyj.java_spring_boot.modules.test.entity.Country;
 import com.hqyj.java_spring_boot.modules.test.service.CityService;
 import com.hqyj.java_spring_boot.modules.test.service.CountryService;
 import com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -155,5 +166,141 @@ public class TestController {
 
         String paramValue2 = request.getParameter("paramKey");
         return "请求的参数为"+paramValue2+"=="+paramValue;
+    }
+
+    /**
+     * 单个文件上传
+     * 参数注解 @RequestParam
+     * 接收参数 MultipartFile file
+     * consumes = "multipart/form-data"
+     * localhost/test/index ---- POST
+     */
+    @PostMapping(value = "/file", consumes = "multipart/form-data")
+    public String uploadFile(@RequestParam MultipartFile file
+            ,RedirectAttributes redirectAttributes){
+
+        //判断是否上传文件
+        if (file.isEmpty()){
+            //没有文件上传提示信息e
+            redirectAttributes.addFlashAttribute("message","no file");
+            return "redirect:/test/index";
+        }
+
+        try {
+            //目标文件路径
+            String descFilePath = "D:\\upload\\"+file.getOriginalFilename();
+            //目标文件
+            File descFile = new File(descFilePath);
+            //上传文件
+            file.transferTo(descFile);
+            //上传成功提示信息
+            redirectAttributes.addFlashAttribute("message","upload success");
+        } catch (IOException e) {
+            e.printStackTrace();
+            //出现异常，上传失败提示信息
+            redirectAttributes.addFlashAttribute("message","upload failed");
+        }
+
+        return "redirect:/test/index";
+    }
+
+    /**
+     * 多文件上传
+     */
+    @PostMapping(value = "/files", consumes = "multipart/form-data")
+    public String uploadFiles(@RequestParam MultipartFile[] files,
+                              RedirectAttributes redirectAttributes){
+        //假定没有上传文件
+        boolean empty = true;
+
+        try {
+            //遍历上传的文件
+            for (MultipartFile file : files) {
+                //判断上传的文件是否为空
+                if (file.isEmpty()){
+                    //为空，则判断下一个上传的文件
+                    continue;
+                }
+
+                //目标文件路径, 获取源文件名称：file.getOriginalFilename()
+                String descFilePath = "D:\\upload\\" + file.getOriginalFilename();
+
+                //目标文件
+                File descFile = new File(descFilePath);
+
+                //上传文件
+                file.transferTo(descFile);
+
+                //有文件可以上传
+                empty = false;
+            }
+            //判断是否有文件上传
+            if (empty){
+                //无文件上传
+                redirectAttributes.addFlashAttribute("message","no file");
+            }else{
+                //至少有一个文件上传
+                redirectAttributes.addFlashAttribute("message","upload success");
+            }
+            } catch (IOException e) {
+                e.printStackTrace();
+                //出现异常，上传失败
+                redirectAttributes.addFlashAttribute("message","upload error");
+            }
+
+        return "redirect:/test/index";
+    }
+
+
+
+    /**
+     * 文件下载
+     */
+    @GetMapping("/file")
+    public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) {
+        Resource resource = null;
+        try {
+            resource = new UrlResource(
+                    //下载文件的具体位置
+                    Paths.get("D:\\upload\\" + fileName).toUri());
+            //判断资源存在且是可读的
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity
+                        .ok()
+                        .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
+                        .header(HttpHeaders.CONTENT_DISPOSITION,
+                                String.format("attachment; filename=\"%s\"", resource.getFilename()))
+                        .body(resource);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 以包装类 IOUtils 输出文件
+     */
+    @RequestMapping("/download2")
+    public void downloadFile2(HttpServletRequest request,
+                              HttpServletResponse response, @RequestParam String fileName) {
+        String filePath = "D:/upload" + File.separator + fileName;
+        File downloadFile = new File(filePath);
+
+        try {
+            if (downloadFile.exists()) {
+                response.setContentType("application/octet-stream");
+                response.setContentLength((int)downloadFile.length());
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                        String.format("attachment; filename=\"%s\"", fileName));
+
+                InputStream is = new FileInputStream(downloadFile);
+                IOUtils.copy(is, response.getOutputStream());
+                response.flushBuffer();
+            }
+        } catch (Exception e) {
+            LOGGER.debug(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
