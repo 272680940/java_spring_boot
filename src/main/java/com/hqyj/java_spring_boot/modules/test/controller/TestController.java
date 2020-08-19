@@ -174,6 +174,9 @@ public class TestController {
      * 接收参数 MultipartFile file
      * consumes = "multipart/form-data"
      * localhost/test/index ---- POST
+     * redirectAttributes.addFlashAttributie("prama",value); 这种方法是隐藏了参数，
+     *    链接地址上不直接暴露，但是能且只能在重定向的 “页面” 获取prama参数值。
+     *
      */
     @PostMapping(value = "/file", consumes = "multipart/form-data")
     public String uploadFile(@RequestParam MultipartFile file
@@ -302,5 +305,13 @@ public class TestController {
             LOGGER.debug(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * localhost/test/indexSimple ---- GET
+     */
+    @GetMapping("/indexSimple")
+    public String testIndexSimple(){
+        return "indexSimple";
     }
 }
