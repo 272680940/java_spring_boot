@@ -1,0 +1,67 @@
+<div class="login_wrapper">
+    <div class="animate form login_form">
+        <section class="login_content">
+            <form action="javascript:void(0);">
+                <h1>*** Manager System</h1>
+                <div>
+                    <input type="text" name="userName"
+                           class="form-control" placeholder="Username" required="" />
+                </div>
+                <div>
+                    <input type="password" name="password"
+                           class="form-control" placeholder="Password" required="" />
+                </div>
+                <div>
+                    <a class="btn btn-default submit" href="javascript:void(0);"
+                       id="register_button">Submit </a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="separator">
+                    <p class="change_link">Already a member ?
+                        <a href="/account/login" class="to_register"> Log in </a>
+                    </p>
+
+                    <div class="clearfix"></div>
+                    <br />
+
+                    <div>
+                        <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                        <p>©2016 All Rights Reserved. Create By Wang</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+<script>
+    $(function() {
+        $("#register_button").bind("click", function(){
+            register();
+        });
+    });
+
+    function register() {
+        var user = {};
+        user.userName = $("[name=userName]").val();
+        user.password = $("[name=password]").val();
+
+        $.ajax({
+            url : "/api/user",
+            type : "post",
+            contentType: "application/json",
+            data : JSON.stringify(user),
+            success : function (data) {
+                if (data.status == 200) {
+                    location.href = "/account/login";
+                } else {
+                    layer.msg(data.massage, {icon: 0});
+                }
+            },
+            error : function (data) {
+                layer.msg(data.responseText, {icon: 0});
+            }
+        });
+    }
+</script>

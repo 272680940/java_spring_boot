@@ -32,24 +32,9 @@
             <div th:replace="${template}"></div>
         </div>
     </div>
-
-<!--    -->
-<!--    <div class="main_container">-->
-<!--        &lt;!&ndash; 引入碎片文件 fragements/sidebar.html &ndash;&gt;-->
-<!--        <div th:replace="fragements/sidebar"></div>-->
-<!--        &lt;!&ndash; 引入碎片文件 fragements/header.html &ndash;&gt;-->
-<!--        <div th:replace="fragements/header"></div>-->
-<!--        &lt;!&ndash; body content &ndash;&gt;-->
-<!--        <div th:if="${template}">-->
-<!--            <div th:replace="${template}"></div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; 引入碎片文件 fragements/footer.html &ndash;&gt;-->
-<!--        <div th:replace="fragements/footer"></div>-->
-<!--    </div>-->
-<!--    -->
 </div>
 
 </body>
 <!-- 引入自定义 js -->
-<script th:src="${'/js/custom.js'}" type="text/javascript"></script>
+<script th:src="${'/js/custom.min.js'}" type="text/javascript"></script>
 </html>
