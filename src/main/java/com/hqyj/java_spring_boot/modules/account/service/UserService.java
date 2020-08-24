@@ -5,6 +5,7 @@ import com.hqyj.java_spring_boot.modules.account.entity.User;
 import com.hqyj.java_spring_boot.modules.common.vo.Result;
 import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
     //注册用户
@@ -24,4 +25,9 @@ public interface UserService {
 
     //查询user中单条数据，并携带role的信息
     User getUserByUserId(Integer userId);
+
+    //上传图片
+    Result<String> uploadUserImg(MultipartFile file);
+
+    Result<User> updateUserProfile(User user);
 }

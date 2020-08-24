@@ -196,7 +196,7 @@
             "columns": [ //定义行数据字段
                 // date:【表单列名】,返回的数据属性，与实体类中的属性对应
                 // name: 对应数据库列名，排序的参数
-                // sortable：是否支持排序，支持则显示排序图标，否则没有
+                // sortable: 是否支持排序，支持则显示排序图标，否则没有
                 {data: 'userId', name: "user_id", sortable: true},
                 {data: 'userName', name: "user_name", sortable: true},
                 {data: 'password', name: "password", sortable: true},
@@ -317,7 +317,7 @@
                 if (rs.status == 200) {
                     initUserTable(DEFAULT_PAGE_SIZE);
                 } else {
-                    layer.alert(rs.messgae, {icon: 0});
+                    layer.alert(rs.massage, {icon: 0});
                 }
             },
             error : function (data) {

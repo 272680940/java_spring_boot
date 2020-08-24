@@ -7,6 +7,8 @@ import com.hqyj.java_spring_boot.modules.common.vo.Result;
 import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/api")
@@ -68,5 +70,23 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public User getUserByUserId(@PathVariable Integer userId){
         return userService.getUserByUserId(userId);
+    }
+
+    /**
+     * 上传图片
+     * localhost/api/userImg --- POST
+     */
+    @PostMapping(value = "/userImg", consumes = "multipart/form-data")
+    public Result<String> uploadFile(@RequestParam MultipartFile file){
+        return userService.uploadUserImg(file);
+    }
+
+    /**
+     * 修改图片路径
+     * localhost/api/profile --- POST
+     */
+    @PutMapping(value = "/profile", consumes = "application/json")
+    public Result<User> updateUserProfile(@RequestBody User user) {
+        return userService.updateUserProfile(user);
     }
 }

@@ -12,7 +12,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -20,6 +22,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${server.http.port}")
     private int port;
+
+    @Autowired
+    private ResourceConfigBean resourceConfigBean;
 
     @Bean
     public Connector connector(){
@@ -61,5 +66,24 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(requestViewInterceptor).addPathPatterns("/**");
     }
 
-
+    /**
+     * 文件上传与下载
+     * 添加本地资源文件
+     * 需求：
+     *      当从页面上传文件到指定本地路径 D:/upload 时, 映射就变成了配置文件
+     *      中的相对路径: /upload/** , 前端获取到了这个相对路径后就可以到本地
+     *      路径 D:/upload 中找到对应的文件渲染到页面上.
+     *      而数据库保存的是相对路径: /upload/** ,
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String systemName = System.getProperty("os.name");
+        if (systemName.toLowerCase().startsWith("win")){
+            registry.addResourceHandler(resourceConfigBean.getRelativePathPattern())
+                    .addResourceLocations(ResourceUtils.FILE_URL_PREFIX+resourceConfigBean.getLocationPathForWindows());
+        }else{
+            registry.addResourceHandler(resourceConfigBean.getRelativePathPattern())
+                    .addResourceLocations(ResourceUtils.FILE_URL_PREFIX+resourceConfigBean.getLocationPathForLinux());
+        }
+    }
 }

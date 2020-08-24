@@ -2,6 +2,7 @@ package com.hqyj.java_spring_boot.modules.account.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqyj.java_spring_boot.config.ResourceConfigBean;
 import com.hqyj.java_spring_boot.modules.account.dao.UserDao;
 import com.hqyj.java_spring_boot.modules.account.dao.UserRoleDao;
 import com.hqyj.java_spring_boot.modules.account.entity.Role;
@@ -10,13 +11,14 @@ import com.hqyj.java_spring_boot.modules.account.service.UserService;
 import com.hqyj.java_spring_boot.modules.common.vo.Result;
 import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import com.hqyj.java_spring_boot.utils.MD5Utils;
-import org.apache.ibatis.annotations.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -126,5 +128,60 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(Integer userId) {
         return userDao.getUserByUserId(userId);
+    }
+
+
+    @Autowired
+    private ResourceConfigBean resourceConfigBean;
+    /**
+     * 上传图片
+     * 泛型 String 表示上传成功后,图片的相对路径的地址
+     */
+    @Override
+    public Result<String> uploadUserImg(MultipartFile file) {
+        //判断是否上传文件
+        if (file.isEmpty()){
+            //没有文件上传提示信息
+            return new Result<String>(Result.ResultStatus.FAILD.status,
+                    "please select img");
+        }
+        //上传成功后保存图片的相对路径
+        String relativePath = "";
+        //目标文件路径（本地硬盘上绝对路径）
+        String descFilePath = "";
+        try {
+            String systemName = System.getProperty("os.name");
+            if (systemName.toLowerCase().startsWith("win")){
+                descFilePath = resourceConfigBean.getLocationPathForWindows()
+                        +file.getOriginalFilename();
+            }else{
+                descFilePath = resourceConfigBean.getLocationPathForLinux()
+                        +file.getOriginalFilename();
+            }
+            relativePath = resourceConfigBean.getRelativePath()
+                    +file.getOriginalFilename();
+            //目标文件
+            File descFile = new File(descFilePath);
+            //上传文件
+            file.transferTo(descFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            //出现异常，上传失败提示信息
+            return new Result<String>(Result.ResultStatus.FAILD.status,"upload failed");
+        }
+        //上传成功后,将相对路径返回,页面拿到相对路径后设置到隐藏的<input>里面,
+        //点击模态框保存按钮,将相对路径保存到数据库里
+        return new Result<String>(Result.ResultStatus.SUCCESS.status,"upload success",relativePath);
+    }
+
+    @Override
+    @Transactional
+    public Result<User> updateUserProfile(User user) {
+        User userTemp = userDao.getUserByUserName(user.getUserName());
+        if (userTemp != null && userTemp.getUserId() != user.getUserId()) {
+            return new Result<User>(Result.ResultStatus.FAILD.status, "User name is repeat.");
+        }
+        userDao.updateUser(user);
+        return new Result<User>(Result.ResultStatus.SUCCESS.status, "Edit success.", user);
     }
 }
