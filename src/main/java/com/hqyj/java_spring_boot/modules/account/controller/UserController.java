@@ -6,10 +6,7 @@ import com.hqyj.java_spring_boot.modules.account.service.UserService;
 import com.hqyj.java_spring_boot.modules.common.vo.Result;
 import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -46,5 +43,30 @@ public class UserController {
     @PostMapping(value = "/users",consumes = "application/json")
     public PageInfo<User> getUsersBySearchVo(@RequestBody SearchVo searchVo){
         return userService.getUsersBySearchVo(searchVo);
+    }
+
+    /**
+     * 修改
+     * {"userName":"zhaoliu","userImg":"/12.png","userId":"1"}
+     * localhost/api/user --- PUT
+     */
+    @PutMapping(value = "user",consumes = "application/json")
+    public Result<User> updateUser(@RequestBody User user){
+        return userService.updateUser(user);
+    }
+
+    /**
+     * 删除
+     * localhost/api/user/6 --- DELETE
+     */
+    @DeleteMapping("/user/{userId}")
+    public Result<Object> deleteUser(@PathVariable Integer userId){
+        return userService.deleteUser(userId);
+    }
+
+    //查询user中单条数据，并携带role的信息
+    @GetMapping("/user/{userId}")
+    public User getUserByUserId(@PathVariable Integer userId){
+        return userService.getUserByUserId(userId);
     }
 }

@@ -2,10 +2,7 @@ package com.hqyj.java_spring_boot.modules.account.dao;
 
 import com.hqyj.java_spring_boot.modules.account.entity.User;
 import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +39,22 @@ public interface UserDao {
             + "</choose>"
             + "</script>")
     List<User> getUsersBySearchVo(SearchVo searchVo);
+
+    //修改
+    @Update("update user set user_name = #{userName},user_img = #{userImg} " +
+            "where user_id = #{userId}")
+    void updateUser(User user);
+
+    //删除
+    @Delete("delete from user where user_id = #{userId}")
+    void deleteUser(Integer userId);
+
+    //查询user中单条数据，并携带role的信息,使用组合查询
+    @Select("select * from user where user_id = #{userId}")
+    @Results(value = {
+            @Result(column = "user_id",property = "userId"),
+            @Result(column = "user_id",property = "roles",javaType = List.class,
+            many = @Many(select = "com.hqyj.java_spring_boot.modules.account.dao.RoleDao.getRolesByUserId"))
+    })
+    User getUserByUserId(Integer userId);
 }

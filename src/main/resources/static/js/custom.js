@@ -5036,4 +5036,27 @@ $(document).ready(function () {
     init_autosize();
     init_autocomplete();
 
-});	
+});
+
+/*=============================================================*/
+//将角色信息以复选框的形式显示在某个标签中
+//参数： rolesDivId 表示某个标签的ID
+function initRoles(rolesDivId,roleElementName) {
+    $.ajax({
+        url:"/api/roles",
+        type:"GET",
+        success:function(result){
+            //获取某个标签的元素节点
+            var rolesDiv = $("#"+rolesDivId);
+            rolesDiv.empty();
+            //将查询的数据插入到标签中
+            $.each(result,function (i,item) {
+                rolesDiv.append("<input name='"+roleElementName+"' type='checkbox' " +
+                    "value='"+item.roleId+"' />"+item.roleName+" ");
+            })
+        },
+        error : function (data) {
+            layer.alert(data.responseText, {icon: 0});
+        }
+    })
+}
