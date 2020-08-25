@@ -30,4 +30,7 @@ public interface UserService {
     Result<String> uploadUserImg(MultipartFile file);
 
     Result<User> updateUserProfile(User user);
+
+    //通过userName获取User
+    User getUserByUserName(String userName);
 }

@@ -19,6 +19,7 @@ public interface UserDao {
 
     //通过userName获取User对象
     @Select("select * from user where user_name=#{userName}")
+    @ResultMap(value = "userResultsMap")
     User getUserByUserName(String userName);
 
     //脚本式多条件查询
@@ -51,7 +52,7 @@ public interface UserDao {
 
     //查询user中单条数据，并携带role的信息,使用组合查询
     @Select("select * from user where user_id = #{userId}")
-    @Results(value = {
+    @Results(id = "userResultsMap",value = {
             @Result(column = "user_id",property = "userId"),
             @Result(column = "user_id",property = "roles",javaType = List.class,
             many = @Many(select = "com.hqyj.java_spring_boot.modules.account.dao.RoleDao.getRolesByUserId"))

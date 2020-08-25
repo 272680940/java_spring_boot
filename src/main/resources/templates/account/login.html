@@ -4,31 +4,26 @@
             <form action="javascript:void(0);">
                 <h1>*** Manager System</h1>
                 <div>
-                    <input type="text" name="userName"
-                           class="form-control" placeholder="Username" required="" />
+                    <input name="userName" type="text" class="form-control"
+                           placeholder="Username" required="" />
                 </div>
                 <div>
-                    <input type="password" name="password"
-                           class="form-control" placeholder="Password" required="" />
+                    <input name="password" type="password" class="form-control"
+                           placeholder="Password" required="" />
                 </div>
-
-                <!--  验证码  -->
                 <div>
                     <input class="form-control input-val" type="text" value="" placeholder="请输入验证码（不区分大小写）"
                            style="float:left; width:68%; margin-bottom: 0px;">
                     <canvas id="canvas" width="100" height="36"></canvas>
                 </div>
-
-                <!--  记住我  -->
                 <div style="text-align:left; margin-top: 5px; margin-left: 3px;">
                     <input type="checkbox" lay-filter="filter" name="rememberMe" style="float: left;"
                            lay-skin="primary" title="30天内自动登录" >30天内自动登录
                 </div>
-
                 <div>
-                    <a class="btn btn-default submit" href="javascript:void(0);"
-                       id="login_button">Log in</a>
-                    <a class="reset_pass" href="javascript:void(0);">Lost your password?</a>
+                    <a id="loginBuuton" class="btn btn-default submit"
+                       href="javascript:void(0);">Log in</a>
+                    <a class="reset_pass" href="#">Lost your password?</a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -42,31 +37,28 @@
                     <br />
 
                     <div>
-                        <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                        <p>©2016 All Rights Reserved. Create By Wang</p>
+                        <h1><i class="fa fa-paw"></i> Hyman Hu</h1>
+                        <p>©2016 All Rights Reserved. Create by HymanHu.</p>
                     </div>
                 </div>
             </form>
         </section>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     show_num = [];
-    $(function () {
-        //动态验证码
+    $(function() {
         draw(show_num);
         $("#canvas").on('click',function(){
             draw(show_num);
         });
 
-        //绑定登录的点击事件
-        $("#login_button").bind("click",function () {
+        $("#loginBuuton").bind("click", function(){
             login();
-        })
-    })
+        });
+    });
 
     function login() {
-        //动态验证码-----------开始
         var code = $(".input-val").val();
         var num = show_num.join("");
         /*if (code == "") {
@@ -76,36 +68,31 @@
             layer.msg("The input code is error.", {icon: 0});
             return;
         };*/
-        //动态验证码-----------结束
 
-
-        //获取输入框的值
         var user = {};
         user.userName = $("[name=userName]").val();
         user.password = $("[name=password]").val();
         user.rememberMe = $("[name=rememberMe]").prop("checked")
 
         $.ajax({
-            url:"/api/login",
-            type:"POST",
-            contentType:"application/json",
-            data:JSON.stringify(user),
-            success:function (data) {
-                if (data.status==200){
-                    alert("Login success");
+            url : "/api/login",
+            type : "post",
+            contentType: "application/json",
+            data : JSON.stringify(user),
+            success : function (data) {
+                if (data.status == 200) {
                     location.href = "/common/dashboard";
-                }else{
+                } else {
                     layer.msg(data.massage, {icon: 0});
                 }
             },
-            error:function (data) {
+            error : function (data) {
                 layer.msg(data.responseText, {icon: 0});
             }
         });
     }
 
-
-    //动态验证码-----------开始
+    //动态验证码
     function draw(show_num) {
         var canvas_width=$('#canvas').width();
         var canvas_height=$('#canvas').height();
@@ -159,5 +146,5 @@
         var b = Math.floor(Math.random() * 256);
         return "rgb(" + r + "," + g + "," + b + ")";
     }
-    //动态验证码-----------结束
+
 </script>

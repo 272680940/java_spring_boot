@@ -11,6 +11,9 @@ import com.hqyj.java_spring_boot.modules.account.service.UserService;
 import com.hqyj.java_spring_boot.modules.common.vo.Result;
 import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import com.hqyj.java_spring_boot.utils.MD5Utils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +68,22 @@ public class UserServiceImpl implements UserService {
     //登录
     @Override
     public Result<User> getUserByUserNameAndPassword(User user) {
+        // shiro
+        Subject subject = SecurityUtils.getSubject();
+
+        //令牌token封装了用户名和密码
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName()
+                ,MD5Utils.getMD5(user.getPassword()));
+        token.setRememberMe(user.getRememberMe());
+        try{
+            subject.login(token);
+            subject.checkRoles();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<>(Result.ResultStatus.FAILD.status,"login faild");
+        }
+
+
         //通过userName得到User对象
         User userTemp = userDao.getUserByUserName(user.getUserName());
         //数据库存在User对象，且加密后的密码比对一致
@@ -183,5 +202,11 @@ public class UserServiceImpl implements UserService {
         }
         userDao.updateUser(user);
         return new Result<User>(Result.ResultStatus.SUCCESS.status, "Edit success.", user);
+    }
+
+    //通过userName获取User
+    @Override
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
     }
 }
