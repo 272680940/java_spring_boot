@@ -13,6 +13,7 @@ import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import com.hqyj.java_spring_boot.utils.MD5Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,6 +83,10 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             return new Result<>(Result.ResultStatus.FAILD.status,"login faild");
         }
+
+        //将登陆成功后的用户信息存储到 Session 中
+        Session session = subject.getSession();
+        session.setAttribute("user",(User)subject.getPrincipal());
 
 
         //通过userName得到User对象
@@ -208,5 +213,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserName(String userName) {
         return userDao.getUserByUserName(userName);
+    }
+
+    //退出
+    @Override
+    public void logout() {
+        //退出
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        //将Session置空
+        Session session = subject.getSession();
+        session.setAttribute("user",null);
     }
 }

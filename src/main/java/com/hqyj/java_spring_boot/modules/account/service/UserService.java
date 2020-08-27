@@ -33,4 +33,7 @@ public interface UserService {
 
     //通过userName获取User
     User getUserByUserName(String userName);
+
+    //退出操作
+    void logout();
 }
