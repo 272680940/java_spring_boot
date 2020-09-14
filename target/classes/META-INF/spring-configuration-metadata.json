@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "name": "com.msg",
+      "type": "com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest",
+      "sourceType": "com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.msg.info",
+      "type": "java.lang.String",
+      "sourceType": "com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest"
+    },
+    {
+      "name": "com.msg.random",
+      "type": "java.lang.String",
+      "sourceType": "com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest"
+    },
+    {
+      "name": "com.msg.server-port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hqyj.java_spring_boot.modules.test.vo.ApplicationTest",
+      "defaultValue": 0
+    }
+  ],
+  "hints": []
+}

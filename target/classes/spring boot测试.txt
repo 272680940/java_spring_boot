@@ -1,0 +1,143 @@
+﻿一、选择题（共12小题，每小题2.5分，共30分）
+	以下不是spring boot优点的是 ( D )
+		A．快速搭建项目
+		B．简化配置  
+		C．自动配置  
+		D．无需容器
+	Spring Boot配置，以下哪个优先级最高（A）
+		A、外置：xx.jar同目录下/config/application.properties；
+		B、外置：xx.jar同目录下/config/application.yml；
+		C、内置：src/main/resources/config；
+		D、内置：src/main/resources
+	以下log日志级别哪个最高（A）
+		A、DEBUG
+		B、INFO
+		C、WARN
+		D、ERROR
+	以下不是spring boot的核心注解的是 (A)
+		A.	@SpringBootConfiguration
+		B.	@EnableAutoConfiguration
+		C.	@ComponentScan
+		D.	@MapperScan
+	要使用springMVC的功能，需要导入那个包 ( C )
+		A．spring-boot-starter-jdbc  
+		B．spring-boot-starter-thymeleaf  
+		C．spring-boot-starter-web  
+		D．mybatis-spring-boot-starter
+	以下哪个注解不能加在类上 ( B )
+		A.	@Controller
+		B.	@ResponseBody
+		C.	@RestController
+		D.	@RequestMapping
+	当控制层上有@RestController注解时，方法中返回一个字符串“<h1>Hello</h1>”，浏览器调用的结果是 ( C )
+		A. 一级标题显示的Hello
+		B.	找不到Hello.html
+		C.	<h1>Hello</>
+		D.	Hello
+	SpringBoot项目中配置文件的格式 ( C )
+		A．properties  
+		B．yml  
+		C．两者都可以
+	不是SpringBoot核心配置文件是（C）
+		A.	bootstrap
+		B.	application
+		C.	application-dev
+	前台使用json参数格式，控制器consumer、参数使用的注解是（A）
+		A、application/josn ---- @RequestBody
+		B、application/josn ---- @ModelAttribute
+		C、application/x-www-form-urlencoded ---- @RequestBody
+		D、application/x-www-form-urlencoded ---- @ModelAttribute
+	@Pointcut("execution(public * com.thornBird.sbd.modules.*.controller.*.*(..))")，第三个*代表（C）
+		A、代表返回类型不限
+		B、代表module下所有子包
+		C、代表所有类
+		D、代表所有方法
+	Url匹配风格中/admin*，以下哪个匹配不正确（D）
+		A、/admin
+		B、/admin1
+		C、/admin123
+		D、/admin/1
+	Mybatis框架中，插入数据使用那个注解（B）
+		A、@Update
+		B、@Insert
+		C、@Select
+		D、@InsertMapping
+
+二、填空题（共5小题，每小题5分，共25分）
+	获取配置文件的属性值，使用哪个注解________@Value________；
+	Java配置依赖的2个注解是__@Configuration________，___@Bean________;
+	Spring Boot修改tomcat端口号为9090应该怎么写？___server.port=9090_________;
+	自定义拦截器需要实现____HandlerInterceptor____接口；
+	过滤器需要使用____@WebFilter_____注解;
+	上传文件，使用__MultipartFile__接收文件对象，consumer使用__multipart/form-data___;
+
+三、问答题（每题5分，共25分）
+	阐述 Spring Boot 特性，举一个例子来解释 Staters 的内容；
+	答：Spring Boot的特性：
+		1、快速开发；
+		2、注解开发；
+		3、pom导入依赖：以starter的方式，按组类聚多个jar,形成单条依赖；以父子继承的方式管理版本；
+		4、内嵌Servlet容器
+		5、习惯优于配置，简化配置，没有web.xml文件
+		6、监控的方便性
+
+	Mybatis传参中，#{*}、${*}的区别？
+	答：
+	#{*}表示使用预编译的方式编写SQL语句，防止SQL注入问题，传递的参数与相应的占位符一一对应；
+	${*}表示传递的参数以原生数据拼接到SQL语句中，主要在Order By中使用
+
+	简述Restful规则？
+	答：
+	书写规范化：
+	对于操作的对象，以单复数的形式表现。
+	api/user/1  ---  GET  
+	api/users   ---  POST
+	api/user/1  ---  DELETE
+	api/user    ---  PUT
+	请求方式分别以PUT、GET、POST、DELETE四种方式请求，而在控制层请求的Path路径分别用@PutMapping、@GetMapping、@PostMapping和@DeleteMapping接收前端发送的请求。这四种方式的请求分别对应SQL语句的增删改查。
+	
+	简述Git使用流程，写几个常用Git命令？
+	答：
+	Git是版本控制工具，主要操作本地仓库和远程仓库。
+	操作流程：
+		准备需要版本控制的代码；
+		对不需要的文件进行忽略提交
+		首先将代码提交到本地仓库
+		最后再将本地仓库的代码push到远程仓库
+	
+	简述shiro两大功能实现流程；
+	答：shiro两大功能：资源授权、身份验证
+	身份验证:
+		Service层获得前端输入的用户名和密码；
+ 		SecurityUtils.getSubject();获取当前用户
+		使用令牌类封装前端输入的用户名和密码
+		使用login()进入到自定义的Realm类中
+		通过用户名查询User对象
+		最后使用省份验证器和令牌进行比对
+	资源授权：
+	
+
+四、编程题（每题10分，共20分）
+	1、提供一个接口，返回 List<User> 列表，对该列表进行排序、保留10条数据；页面端使用 ajax post 方式提交请求，包装查询参数，获取接口返回数据，并遍历数据渲染到页面上 table 表格中；
+	答：
+	GetMapping("/api/users")
+	public String getUsers(ModelMap modelMap){
+		List<User> users = new List<User>();
+		users.add(User("1","zhansan"));	
+	}
+
+	页面：
+	$.ajax({
+		url:"/api/users",
+		type:"GET",
+		success:function(data){
+			var tdDiv = ""
+			$.each(data,function(i,item){
+				tdDiv += "<td> </td>"
+			})
+			$("#table").append(tdDiv )
+		}
+	})
+	
+	
+	2、设计一套购物车接口，以 Cookie 或者 redis 实现

@@ -1,0 +1,119 @@
+一，选择题
+	以下哪个不是python解释器  D
+		CPython
+		IPython
+		Jython
+		py
+	下列哪个表达式在Python中是非法的？ B
+		x = y = z = 1
+		x = (y = z + 1)
+		x, y = y, x
+		x += y
+	print("%d %% %d"%(3, 5)) 输出结果是？  A
+		3 % 5
+		3 %% 5
+		2
+		1
+	“今年第一季度GDP提高了x%”，x为float值，格式化字符串，x保留两位小数，下面哪个是正确的？  C
+		print("今年第一季度GDP提高了%.2f"%(22.234,))
+		print("今年第一季度GDP提高了%.2f%"%(22.234,))
+		print("今年第一季度GDP提高了%.2f%%"%(22.234,))
+		print("今年第一季度GDP提高了{0}%".format(22.234))
+	l = ["cdsa", 32, 33.2, None, True];l.pop();print(l);打印结果是： C
+		["cdsa", 32, 33.2, True]
+		["cdsa", 32, None, True]
+		["cdsa", 32, 33.2, None]
+		[32, 33.2, None, True]
+	print(15 // 2);  B
+		1
+		7
+		7.5
+		8
+	下面哪个不是 python 的数据类型  A
+		int
+		str
+		set
+		double
+	*args 代表什么参数  B
+		位置参数
+		可变参数
+		可变关键字参数
+		命名关键字参数
+	函数多个返回值，实际上返回的是什么数据类型？ C
+		list
+		set
+		tuple
+		dict
+	安装Django2.0.7版本，使用的什么命令？ C
+		pip install django
+		pip install django=2.0.7
+		pip install django==2.0.7
+		pip install django version=2.0.7
+
+二、填空题
+	字符串前面添加u、r、b分别代表什么？
+	答：
+	    u:声明后面字符串以 Unicode 格式 进行编码
+	    r:声明后面的字符串是普通字符串
+	    b:bytes
+
+	requests模块请求远程服务器，如何设置相应编码？
+	答：
+	    r.encoding = r.apparent_encoding;
+
+	windows下执行python的方式；
+	答：
+	    （1）编写文本文档，修改后缀为.py，cmd命令运行
+	    （2）cmd中输入命令python，启动 Python 解释器，输入代码，一行一行的执行；
+
+	创建python package，会自动生成什么文件？
+	答：
+	    会自动生成 __init__.py 文件
+
+	python变量作用域有哪些？
+    答：
+        四种作用域：
+        L （Local） ---- 局部作用域；
+        E （Enclosing） ---- 闭包函数外的函数中；
+        G （Global） ---- 全局作用域；
+        B （Built-in） ---- 内建作用域；
+三、问答题
+	python命名规则？
+	答：
+	    （1）以字母、数字、下划线开头，不能以数字开头；
+	    （2）不能是 Python 关键字，但可以包含关键字；
+	    （3）常量要全大写；
+	    （4）全局变量：__xxx，双下划线开头，若想在函数内部对外部变量进行操作，需要在内部声明为global；
+	    （5）系统自带：__xxx__；
+	    （6）私有变量：_xxx，不能用'from module import *'导入；
+
+
+	set删除操作中，pop、remove的区别？
+	答：
+	    set集合中pop()无参是默认删除最后一个
+	    remove()通过传递set集合中的key值删除
+
+	list使用+=和append函数的区别？
+	答：
+	    list使用+=是将+=右边集合中的的元素添加到左边的集合中；
+	    使用append是将整个集合作为一个元素，添加到另一个集合中；
+
+	使用bs4解析响应内容，获取某div（class为aaa）下所有span节点；
+	答：
+        span_list = bs.find_all(name="span", attrs={"class": "aaa;"});
+
+	简述Django操作流程、组件的作用；
+	答：
+	    用户通过浏览器发送请求，请求地址到达urls.py组件匹配对应的视图views.py组件的path地址，
+	    如果有数据处理，则进入models.py中将从数据库操作的数据封装到模型中，再发送到视图views.py，然后发送到模板，最后将数据渲染到客户端
+	    如果没有数据处理，则视图views.py会直接返回模板，再渲染到客户端
+	    urls.py组件是匹配客户端发送的请求路径；
+	    views.py组件是将处理好的数据发送给模板；
+	    models.py组件是将数据库处理好的数据封装到模型中
+	    settings.py是编辑程序的系统配置
+
+
+四、编程题
+	定义一个函数，接受 0 个或多个参数，返回累计乘积；
+
+	定义一个函数，去掉字符串前后的空格；

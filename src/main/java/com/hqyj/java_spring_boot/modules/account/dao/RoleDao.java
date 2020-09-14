@@ -56,4 +56,8 @@ public interface RoleDao {
     @Select("select * from role where role_id = #{roleId}")
     Role getRoleByRoleId(Integer roleId);
 
+    //通过resourceId查询role
+    @Select("select * from role role left join role_resource roleResource "
+            + "on role.role_id = roleResource.role_id where roleResource.resource_id = #{resourceId}")
+    List<Role> getRolesByResourceId(int resourceId);
 }

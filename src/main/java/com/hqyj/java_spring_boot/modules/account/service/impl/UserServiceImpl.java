@@ -13,6 +13,7 @@ import com.hqyj.java_spring_boot.modules.common.vo.SearchVo;
 import com.hqyj.java_spring_boot.utils.MD5Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
